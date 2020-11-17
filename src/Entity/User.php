@@ -8,8 +8,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  */
-class User implements UserInterface
+class User implements UserInterface, \JsonSerializable
 {
     /**
      * @ORM\Id
@@ -137,4 +138,13 @@ class User implements UserInterface
     }
 
 
+    public function jsonSerialize()
+    {
+        return [
+            "email" => $this->getEmail(),
+            "name" => $this->getName(),
+            "roles" => $this->getRoles(),
+            "id" => $this->getId()
+        ];
+    }
 }
