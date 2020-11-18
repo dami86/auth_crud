@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Security;
 
-use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,6 +27,8 @@ class ApiTokenAuthenticator extends AbstractGuardAuthenticator
      * Called on every request to decide if this authenticator should be
      * used for the request. Returning `false` will cause this authenticator
      * to be skipped.
+     * @param Request $request
+     * @return bool
      */
     public function supports(Request $request)
     {
@@ -37,6 +38,8 @@ class ApiTokenAuthenticator extends AbstractGuardAuthenticator
     /**
      * Called on every request. Return whatever credentials you want to
      * be passed to getUser() as $credentials.
+     * @param Request $request
+     * @return array|string|null
      */
     public function getCredentials(Request $request)
     {
@@ -57,6 +60,11 @@ class ApiTokenAuthenticator extends AbstractGuardAuthenticator
         return $userProvider->loadUserByUsername($credentials);
     }
 
+    /**
+     * @param mixed $credentials
+     * @param UserInterface $user
+     * @return bool
+     */
     public function checkCredentials($credentials, UserInterface $user)
     {
         // Check credentials - e.g. make sure the password is valid.
@@ -66,6 +74,12 @@ class ApiTokenAuthenticator extends AbstractGuardAuthenticator
         return true;
     }
 
+    /**
+     * @param Request $request
+     * @param TokenInterface $token
+     * @param string $providerKey
+     * @return Response|null
+     */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
         // on success, let the request continue
