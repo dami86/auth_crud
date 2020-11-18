@@ -20,6 +20,11 @@ class User implements UserInterface, \JsonSerializable
     private $id;
 
     /**
+    * @ORM\Column(type="string", unique=true, nullable=true)
+    */
+    private $apiToken;
+
+    /**
      * @ORM\Column(type="string", length=180, unique=true)
      */
     private $email;

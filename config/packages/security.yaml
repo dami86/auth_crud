@@ -9,11 +9,17 @@ security:
         app_user_provider:
             entity:
                 class: App\Entity\User
-                property: email
+                property: apiToken
+
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+        api:
+            pattern: ^/api/
+            guard:
+                authenticators:
+                    - App\Security\ApiTokenAuthenticator
         main:
             anonymous: lazy
             provider: app_user_provider
@@ -37,3 +43,7 @@ security:
 #    access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
+#    access_control:
+#        - { path: '^/login', roles: IS_AUTHENTICATED_ANONYMOUSLY }
+#        - { path: '^/api', roles: ROLE_API_USER }
+#        - { path: '^/', roles: ROLE_USER }
