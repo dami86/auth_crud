@@ -21,8 +21,19 @@ services:
             - '../src/Kernel.php'
             - '../src/Tests/'
 
+#    App\Api\:
+#        resource: '../src/Api/'
+#    App\Api\CrudHelper:
+#        arguments: ['@request_stack']
+#        autowire: true
+#
+#    App\Api\UserApi:
+#        arguments: [ '@App\Api\CrudHelper', '@security.command.user_password_encoder', '@doctrine.orm.default_entity_manager' ]
+    App\Api\CrudHelper: ~
+
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
+    App\Api\ICrud: '@App\Api\CrudHelper'
     App\Controller\:
         resource: '../src/Controller/'
         tags: ['controller.service_arguments']
