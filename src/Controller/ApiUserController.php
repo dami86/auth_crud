@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Api\UserApi;
 use App\Entity\User;
-use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,7 +32,7 @@ class ApiUserController extends AbstractController
      * @param Request $request
      * @return JsonResponse|null
      */
-    public function addUser(\App\Api\UserApi $user, Request $request): ?JsonResponse
+    public function addUser(UserApi $user, Request $request): ?JsonResponse
     {
         return $user->addUser($request);
     }
@@ -73,7 +72,7 @@ class ApiUserController extends AbstractController
     public function getOne($id, UserApi $userApi): JsonResponse
     {
         $repository = $this->getDoctrine()->getRepository(User::class);
-        return $userApi->getOne($id, $repository);
+        return $userApi->getOne($repository,$id);
     }
 
     public function response(array $data, $status = 200, $headers = []): JsonResponse

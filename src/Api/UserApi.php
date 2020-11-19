@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace App\Api;
 
 use App\Entity\User;
-use App\Repository\UserRepository;
-use Doctrine\ORM\EntityManager;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Repository\RepositoryFactory;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -28,7 +26,7 @@ class UserApi implements ICrud
         $this->userPasswordEncoder = $userPasswordEncoder;
     }
 
-    public function getOne($id, $repository): JsonResponse
+    public function getOne(ServiceEntityRepository $repository, $id): JsonResponse
     {
         $user = $repository->find($id);
 
@@ -62,7 +60,7 @@ class UserApi implements ICrud
                 throw new \Exception();
             }
 
-            $user = new \App\Entity\User();
+            $user = new User();
 
             $user->setEmail($request->get('email'));
             $user->setName($request->get('name'));
@@ -87,7 +85,7 @@ class UserApi implements ICrud
         }
     }
 
-    public function deleteUser($repository, $id): JsonResponse
+    public function deleteUser(ServiceEntityRepository $repository, $id): JsonResponse
     {
         $user = $repository->find($id);
 
@@ -105,7 +103,7 @@ class UserApi implements ICrud
         return $this->crudHelper->response($data);
     }
 
-    public function updateUser($repository, $id): JsonResponse
+    public function updateUser(ServiceEntityRepository $repository, $id): JsonResponse
     {
 
         try {
@@ -148,7 +146,7 @@ class UserApi implements ICrud
         }
     }
 
-    public function getAll($repository): JsonResponse
+    public function getAll(ServiceEntityRepository $repository): JsonResponse
     {
         $users = $repository->findAll();
         return $this->crudHelper->response($users);
