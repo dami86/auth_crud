@@ -152,4 +152,9 @@ class User implements UserInterface, \JsonSerializable
             "id" => $this->getId()
         ];
     }
+
+    public function setApiToken(string $apiToken)
+    {
+        $this->apiToken = $apiToken;
+    }
 }
